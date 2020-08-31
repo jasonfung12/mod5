@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl,
-  [...], // ***** <---- TODO: STEP 1: Substitute [...] ******
-  true); // Explicitly setting the flag to get JSON from server processed into an object literal
+    buildAndShowCategoriesHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
+    true); // Explicitly setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
 
@@ -103,6 +103,12 @@ function buildAndShowHomeHTML (categories) {
       // variable's name implies it expects.
       // var chosenCategoryShortName = ....
 
+      var chosenCategoryShortName = 
+        buildchosenCategoryShortNameHtml (categories,
+                                          homeHtml);
+        insertHtml("#main-content", chosenCategoryShortNameHtml);
+
+
 
       // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
       // chosen category from STEP 2. Use existing insertProperty function for that purpose.
@@ -116,12 +122,29 @@ function buildAndShowHomeHTML (categories) {
       // it into the home html snippet.
       //
       // var homeHtmlToInsertIntoMainPage = ....
+      var homeHtmlToInsertIntoMainPage =
+        $dc.loadMenuItems('L') = function (categoryShort){
+          showLoading("#main-content");
+          $ajaxUtils.sendGetRequest(
+          menuItemsUrl + categoryShort,
+          buildAndShowMenuItemsHTML);
+        };
 
+      var insertProperty = function (string, propName, propValue) {
+        var propToReplace = "{{" + propName + "}}";
+        string = string
+          .replace(new RegExp(propToReplace, "g"), propValue);
+        return string;
+      };
 
       // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
       // Use the existing insertHtml function for that purpose. Look through this code for an example
       // of how to do that.
       // ....
+      var insertHtml = function (selector, html) {
+        var targetElem = document.querySelector(selector);
+        targetElem.innerHTML = html;
+      };
 
     },
     false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
