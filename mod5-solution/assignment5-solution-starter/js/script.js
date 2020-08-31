@@ -103,10 +103,7 @@ function buildAndShowHomeHTML (categories) {
       // variable's name implies it expects.
       // var chosenCategoryShortName = ....
 
-      var chosenCategoryShortName = 
-        buildchosenCategoryShortNameHtml (categories,
-                                          homeHtml);
-        insertHtml("#main-content", chosenCategoryShortNameHtml);
+      var chosenCategoryShortName = chooseRandomCategory(categories).short_name;
 
 
 
@@ -122,29 +119,13 @@ function buildAndShowHomeHTML (categories) {
       // it into the home html snippet.
       //
       // var homeHtmlToInsertIntoMainPage = ....
-      var homeHtmlToInsertIntoMainPage =
-        $dc.loadMenuItems('L') = function (categoryShort){
-          showLoading("#main-content");
-          $ajaxUtils.sendGetRequest(
-          menuItemsUrl + categoryShort,
-          buildAndShowMenuItemsHTML);
-        };
-
-      var insertProperty = function (string, propName, propValue) {
-        var propToReplace = "{{" + propName + "}}";
-        string = string
-          .replace(new RegExp(propToReplace, "g"), propValue);
-        return string;
-      };
+      var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", "'" + chooseCategoryShortName + "'");
 
       // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
       // Use the existing insertHtml function for that purpose. Look through this code for an example
       // of how to do that.
       // ....
-      var insertHtml = function (selector, html) {
-        var targetElem = document.querySelector(selector);
-        targetElem.innerHTML = html;
-      };
+      insertHtml("#main-content" , homeTtmlToInsertIntoMainPage);
 
     },
     false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
